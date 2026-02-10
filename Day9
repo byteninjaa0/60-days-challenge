@@ -1,0 +1,43 @@
+from tokenizers import Tokenizer
+from tokenizers.models import BPE, WordPiece
+from tokenizers.trainers import BpeTrainer, WordPieceTrainer
+from tokenizers.pre_tokenizers import Whitespace
+
+text = """
+Tokenization plays a crucial role in Natural Language Processing.
+Subword tokenizers like BPE and WordPiece help handle rare and unknown words efficiently.
+"""
+
+corpus = [text]
+
+# 1. Whitespace Tokenization
+whitespace_tokens = text.split()
+print("Whitespace Tokenization:")
+print(whitespace_tokens)
+print("Total Tokens:", len(whitespace_tokens))
+print("-" * 50)
+
+# 2. BPE Tokenization
+bpe_tokenizer = Tokenizer(BPE(unk_token="[UNK]"))
+bpe_tokenizer.pre_tokenizer = Whitespace()
+
+bpe_trainer = BpeTrainer(vocab_size=50, special_tokens=["[UNK]"])
+bpe_tokenizer.train_from_iterator(corpus, trainer=bpe_trainer)
+
+bpe_output = bpe_tokenizer.encode(text)
+print("BPE Tokenization:")
+print(bpe_output.tokens)
+print("Total Tokens:", len(bpe_output.tokens))
+print("-" * 50)
+
+# 3. WordPiece Tokenization
+wp_tokenizer = Tokenizer(WordPiece(unk_token="[UNK]"))
+wp_tokenizer.pre_tokenizer = Whitespace()
+
+wp_trainer = WordPieceTrainer(vocab_size=50, special_tokens=["[UNK]"])
+wp_tokenizer.train_from_iterator(corpus, trainer=wp_trainer)
+
+wp_output = wp_tokenizer.encode(text)
+print("WordPiece Tokenization:")
+print(wp_output.tokens)
+print("Total Tokens:", len(wp_output.tokens))
