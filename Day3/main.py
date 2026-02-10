@@ -13,7 +13,7 @@ def clean_text(text):
     tokens = word_tokenize(text)
     tokens = [word for word in tokens if word not in stopwords.words('english')]
     return tokens
-stemmer = PorterStemmer()
+# stemmer = PorterStemmer()
 
 def apply_stemming(tokens):
     return [stemmer.stem(word) for word in tokens]
